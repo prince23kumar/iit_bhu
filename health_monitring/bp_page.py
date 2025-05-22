@@ -93,19 +93,26 @@ class BPPage(tk.Frame):
             return
 
         try:
+            # Get PPG data from the main app
             ppg_values = data["ppg"]
+            
+            # We should receive IR, Red, Green signals
+            # For BP calculation, typically we use the IR signal (index 0)
             if len(ppg_values) >= 1:
                 ir_value = float(ppg_values[0])
                 logging.debug(f"Received IR value: {ir_value}")
 
+                # Add to our data buffer
                 if len(self.data) >= self.maxpts:
                     self.data.pop(0)
                 self.data.append(ir_value)
 
+                # Process data if we have enough samples
                 if len(self.data) > 20:
                     fs = int(self.srE.get())
                     logging.debug(f"Sample rate: {fs}")
 
+                    # Apply bandpass filter
                     try:
                         filt = self.butter_bandpass_filter(
                             np.array(self.data),
@@ -116,13 +123,16 @@ class BPPage(tk.Frame):
                         )
                         logging.debug(f"Filtered data length: {len(filt)}")
 
+                        # Update the graph with filtered data
                         x = np.arange(len(filt))
                         self.line.set_data(x, filt)
-
+                        
+                        # Adjust y-axis limits
                         mn, mx = filt.min(), filt.max()
                         self.ax.set_ylim(mn - 0.1 * (mx - mn), mx + 0.1 * (mx - mn))
                         self.canvas.draw()
-
+                        
+                        # Calculate BP if we have enough data
                         if len(filt) >= 30:
                             try:
                                 sbp, dbp = self.process_ppg_data(filt)
