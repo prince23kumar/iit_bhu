@@ -23,8 +23,8 @@ from collections import deque
 from temperature_page import TemperaturePage
 
 # Configure logging
-logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s",
-                   filename="health_app.log", filemode="w")
+#logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s",
+ #                  filename="health_app.log", filemode="w")
 # Also log to console
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)

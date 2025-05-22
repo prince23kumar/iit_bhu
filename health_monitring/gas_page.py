@@ -1,4 +1,5 @@
 import tkinter as tk
+from PIL import Image, ImageTk
 
 class GasPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -10,6 +11,19 @@ class GasPage(tk.Frame):
         self.DATA_FONT = ("Helvetica", 20)
         self.BUTTON_FONT = ("Helvetica", 16)
 
+        # Background Image
+        self.screen_width = self.winfo_screenwidth()
+        self.screen_height = self.winfo_screenheight()
+
+        try:
+            bg_image = Image.open("assets/menu_background.png")
+            bg_image = bg_image.resize((self.screen_width, self.screen_height), Image.Resampling.LANCZOS)
+            self.bg_photo = ImageTk.PhotoImage(bg_image)
+            bg_label = tk.Label(self, image=self.bg_photo)
+            bg_label.place(relwidth=1, relheight=1)
+        except Exception as e:
+            print(f"[ECGPage] Could not load background: {e}")
+            self.configure(bg="#f0f0f0")  # Fallback background color
         # Title Label
         self.label = tk.Label(self, text="Gas Sensor Data", font=self.TITLE_FONT, fg="white", bg="black")
         self.label.place(relx=0.5, rely=0.1, anchor="center")

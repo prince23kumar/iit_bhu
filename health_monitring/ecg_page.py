@@ -27,7 +27,7 @@ class ECGPage(tk.Frame):
         self.screen_height = self.winfo_screenheight()
 
         try:
-            bg_image = Image.open("assets/ecg_background.png")
+            bg_image = Image.open("assets/menu_background.png")
             bg_image = bg_image.resize((self.screen_width, self.screen_height), Image.Resampling.LANCZOS)
             self.bg_photo = ImageTk.PhotoImage(bg_image)
             bg_label = tk.Label(self, image=self.bg_photo)
